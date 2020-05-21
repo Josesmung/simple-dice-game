@@ -3,15 +3,27 @@ import java.util.*;
 import java.lang.Math;
 //uses java's random package for random numbers
 import java.util.Random; 
+
+import java.io.PrintWriter; 
+import java.io.IOException;  
+
 public class dicegame {
    static int nPlayers = 2;
-   static int nGames = 1000;
+   static int nGames = 10000;
    static int[] wins = new int[nPlayers];
    static int[] pScores = new int[nPlayers];
-   public static void main(String args[]) {
-         
-      for (int i = 0; i < nGames; i++) { //simulation loop
-         
+   static String output = "";
+   public static void main(String args[]) throws IOException{
+      
+       PrintWriter out = new PrintWriter("output.txt");
+      
+      
+      //repeated loops
+      for (int j = 0; j < 10000; j++) {   
+        wins = new int[nPlayers];
+        
+        for (int i = 0; i < nGames; i++) { //simulation loop
+
          int pIndex = 0; //keeps track of player
          while ((pScores[0] < 20) || (pScores[1] < 20)) { //main game loop
             //System.out.println(Arrays.toString(pScores));
@@ -33,7 +45,8 @@ public class dicegame {
             } 
             else { //player 2 turn (if roll is bigger than 5 then add to score, else sub from enemy player)
                pIndex = 0; 
-               if (roll > 5) {
+               pScores[1] += roll;
+               /*if (roll > 5) {
                   pScores[1] += roll;
                } else {
                   if (pScores[0] - roll < 0) {
@@ -41,24 +54,28 @@ public class dicegame {
                   } else {
                      pScores[0] -= roll;
                   }
-               } 
+               } */
             }
          }
          //System.out.println(pIndex);
          //tracks wins
-         if (pIndex == 1) {
-            wins[1]++;
-         } else {
+            if (pIndex == 1) {
+               wins[1]++;
+            } else {
             wins[0]++;
          }
          pScores = new int[2]; //resets scores
       }
-      
-      System.out.println(Arrays.toString(wins));
+      //prints outout to text doc
+      //System.out.println(Arrays.toString(wins));
       //System.out.println(wins[0]);
       double p1 = new Double(wins[0]) / nGames;
-      System.out.println("Player 1 won: " + p1);
-      double p2 = new Double(wins[1]) / nGames;
-      System.out.println("Player 2 won: " + p2);
+      out.println(p1);
+      System.out.println(p1);
+      
+      //double p2 = new Double(wins[1]) / nGames;
+      //System.out.println("Player 2 won: " + p2);
+      }
+      out.close();
    }
 }
